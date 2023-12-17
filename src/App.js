@@ -1,13 +1,11 @@
-import Grid from "@mui/material/Grid";
-import { PageLayout } from "./components/PageLayout";
+import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
-
+import { PageLayout } from "./components/PageLayout";
 import { Home } from "./pages/Home";
 import { Profile } from "./pages/Profile";
-
-import { MsalProvider, useMsal, useIsAuthenticated } from "@azure/msal-react";
+import { MsalProvider, useIsAuthenticated, useMsal } from "@azure/msal-react";
 import { InteractionRequiredAuthError } from "@azure/msal-browser";
-import { useEffect } from "react";
+import Grid from "@mui/material/Grid";
 
 function App({ msalInstance }) {
   return (
@@ -30,19 +28,18 @@ const Pages = () => {
       instance
         .ssoSilent({
           scopes: ["user.read"],
-          loginHint: "fabian.ackeret@anyshare.onmicrosoft.com",
+          // loginHint: "",
         })
         .then((response) => {
           instance.setActiveAccount(response.account);
         })
         .catch((error) => {
           if (error instanceof InteractionRequiredAuthError) {
-            instance.loginRedirect({
-              scopes: ["user.read"],
-            });
+            instance.loginRedirect();
           }
         });
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

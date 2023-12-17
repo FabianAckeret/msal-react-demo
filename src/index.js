@@ -12,9 +12,12 @@ import { PublicClientApplication, EventType } from "@azure/msal-browser";
 
 const pca = new PublicClientApplication({
   auth: {
-    clientId: "8b0b52d2-9082-4236-bdaa-ee7e695cc574",
-    authority: "https://login.microsoftonline.com/organizations",
+    clientId: "b96e5b82-8abb-4cbb-b4bf-7b7554404eac",
+    authority:
+      "https://login.microsoftonline.com/cbaf2168-de14-4c72-9d88-f5f05366dbef",
     redirectUri: "/",
+    postLogoutRedirectUri: "/",
+    clientCapabilities: ["CP1"],
   },
   cache: {
     cacheLocation: "localStorage",
@@ -22,22 +25,22 @@ const pca = new PublicClientApplication({
   },
   system: {
     loggerOptions: {
-      loggerCallback: (levle, message, containsPII) => {
+      loggerCallback: (level, message, containsPII) => {
         console.log(message);
       },
-      logLevel: "Info",
+      logLevel: "Verbose",
     },
   },
 });
 
 pca.addEventCallback((event) => {
   if (event.eventType === EventType.LOGIN_SUCCESS) {
-    console.log(event);
     pca.setActiveAccount(event.payload.account);
   }
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
