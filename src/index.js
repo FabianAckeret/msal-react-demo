@@ -16,6 +16,18 @@ const pca = new PublicClientApplication({
     authority: "https://login.microsoftonline.com/organizations",
     redirectUri: "/",
   },
+  cache: {
+    cacheLocation: "localStorage",
+    storeAuthStateInCookie: false,
+  },
+  system: {
+    loggerOptions: {
+      loggerCallback: (levle, message, containsPII) => {
+        console.log(message);
+      },
+      logLevel: "Info",
+    },
+  },
 });
 
 pca.addEventCallback((event) => {
